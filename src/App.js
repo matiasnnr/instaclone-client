@@ -1,25 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { ApolloProvider } from '@apollo/client';
+import client from './config/apollo';
+import Auth from './pages/Auth';
 
-function App() {
+export default function App() {
+
+  const [auth, setAuth] = useState(undefined);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ApolloProvider client={client}>
+      {
+        !auth ? <Auth /> : <h1>Estás logueado</h1>
+      }
+    </ApolloProvider>
   );
 }
-
-export default App;

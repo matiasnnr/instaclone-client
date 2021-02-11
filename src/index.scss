@@ -15,10 +15,17 @@ code {
     monospace;
 }
 
+// estilos para los formularios de semantic
 .ui.form {
   .btn-submit {
     width: 100%;
     background-color: $action;
     color: $font-light;
+  }
+
+  .submit-error {
+    color: $danger;
+    text-align: center;
+    margin: 20px 0 0 0;
   }
 }

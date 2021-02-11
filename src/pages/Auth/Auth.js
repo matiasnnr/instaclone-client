@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Image } from 'semantic-ui-react';
 import RegisterForm from '../../components/Auth/RegisterForm';
+import LoginForm from '../../components/Auth/LoginForm';
 import instaclone from '../../assets/images/instaclone.png';
 import './Auth.scss';
 
@@ -16,7 +17,7 @@ export default function Auth() {
                 {
                     showLogin
                         ?
-                        <p>Formulario de Login</p>
+                        <LoginForm />
                         :
                         <RegisterForm setShowLogin={setShowLogin} />
                 }

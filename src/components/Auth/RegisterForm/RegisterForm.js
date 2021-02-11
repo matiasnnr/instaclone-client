@@ -1,19 +1,38 @@
 import React from 'react';
 import { Form, Button } from 'semantic-ui-react';
 import './RegisterForm.scss';
+import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useMutation } from '@apollo/client';
+import { REGISTER } from '../../../gql/User';
 
 export default function RegisterForm(props) {
 
     const { setShowLogin } = props;
 
+    const [register] = useMutation(REGISTER);
+
     const formik = useFormik({
         initialValues: initialFormValues(),
         validationSchema: validatingSchemas(), // si nuestra validación no es correcta, el onSubmit nunca se va a ejecutar
-        onSubmit: (formValue) => {
-            console.log("Form enviado");
-            console.log(formValue);
+        onSubmit: async (formData) => {
+            try {
+                const newUser = formData;
+                delete newUser.repeatPassword // eliminamos la propiedad repeatPassword porque no la necesitamos para crear al user en GQL
+
+                await register({
+                    variables: {
+                        input: newUser
+                    }
+                });
+
+                toast.success("Usuario registrado correctamente");
+                setShowLogin(true);
+            } catch (error) {
+                toast.error(error.message);
+                console.log(error);
+            }
         }
     });
 

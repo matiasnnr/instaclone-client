@@ -6,12 +6,15 @@ import * as Yup from 'yup';
 import { useMutation } from '@apollo/client';
 import { LOGIN } from '../../../gql/User';
 import { toast } from 'react-toastify';
-import setToken from '../../../utils/token';
+import setToken, { decodeToken } from '../../../utils/token';
+import useAuth from '../../../hooks/useAuth';
 
 const LoginForm = () => {
 
     const [error, setError] = useState("");
     const [login] = useMutation(LOGIN);
+
+    const { setUser } = useAuth();
 
     const formik = useFormik({
         initialValues: initialFormValues(),
@@ -28,6 +31,7 @@ const LoginForm = () => {
                 const { token } = data.login;
 
                 setToken(token);
+                setUser(decodeToken(token));
 
             } catch (error) {
                 toast.error(error.message);

@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ApolloProvider } from '@apollo/client';
 import client from './config/apollo';
 import Auth from './pages/Auth';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getToken } from './utils/token';
+import AuthContext from './context/AuthContext';
+import Navigation from './routes/Navigation';
 
 export default function App() {
 
@@ -20,22 +22,40 @@ export default function App() {
     console.log(token);
   }, [])
 
+  const logout = () => {
+    console.log('Cerrar sesión');
+  }
+
+  const setUser = (user) => {
+    setAuth(user);
+  }
+
+  // useMemo compara los datos que vienen con los que tenemos, si son distintos lo actualiza, sino no hace nada y evitamos que el componente se vuelva a recargar
+  const authData = useMemo(
+    () => ({
+      auth,
+      logout,
+      setUser
+    }), [auth])
+
   return (
     <ApolloProvider client={client}>
-      {
-        !auth ? <Auth /> : <h1>Estás logueado</h1>
-      }
-      <ToastContainer
-        position="top-right"
-        autoClose={5000} // 5 seg
-        hideProgressBar
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+      <AuthContext.Provider value={authData}>
+        {
+          !auth ? <Auth /> : <Navigation />
+        }
+        <ToastContainer
+          position="top-right"
+          autoClose={5000} // 5 seg
+          hideProgressBar
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+      </AuthContext.Provider>
     </ApolloProvider>
   );
 }

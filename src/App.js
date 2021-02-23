@@ -37,6 +37,8 @@ export default function App() {
       setUser
     }), [auth])
 
+  if (!auth) return null;
+
   return (
     <ApolloProvider client={client}>
       <AuthContext.Provider value={authData}>

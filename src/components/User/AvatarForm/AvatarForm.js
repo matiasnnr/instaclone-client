@@ -2,12 +2,25 @@ import React, { useCallback } from 'react';
 import './AvatarForm.scss';
 import { Button } from 'semantic-ui-react';
 import { useDropzone } from 'react-dropzone';
+import { useMutation } from '@apollo/client';
+import { UPDATE_AVATAR } from '../../../gql/User';
 
 const AvatarForm = (props) => {
 
     const { setShowModal } = props;
-    const onDrop = useCallback((acceptedFile) => {
-        console.log(acceptedFile);
+
+    const [updateAvatar] = useMutation(UPDATE_AVATAR);
+
+    const onDrop = useCallback(async (acceptedFile) => {
+        const file = acceptedFile[0];
+
+        try {
+            const result = await updateAvatar({ variables: { file } });
+            console.log(result);
+        } catch (error) {
+            console.log(error);
+        }
+
     }, []);
 
     const { getRootProps, getInputProps } = useDropzone({
@@ -27,4 +40,4 @@ const AvatarForm = (props) => {
     )
 }
 
-export default AvatarForm
+export default AvatarForm;

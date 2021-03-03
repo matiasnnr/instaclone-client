@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { getToken, decodeToken } from './utils/token';
 import AuthContext from './context/AuthContext';
 import Navigation from './routes/Navigation';
+import LoginForm from './components/Auth/LoginForm';
 
 export default function App() {
 
@@ -36,8 +37,6 @@ export default function App() {
       logout,
       setUser
     }), [auth])
-
-  if (!auth) return null;
 
   return (
     <ApolloProvider client={client}>

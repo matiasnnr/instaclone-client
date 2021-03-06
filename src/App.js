@@ -4,7 +4,7 @@ import client from './config/apollo';
 import Auth from './pages/Auth';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { getToken, decodeToken } from './utils/token';
+import { getToken, decodeToken, removeToken } from './utils/token';
 import AuthContext from './context/AuthContext';
 import Navigation from './routes/Navigation';
 
@@ -22,7 +22,8 @@ export default function App() {
   }, [])
 
   const logout = () => {
-    console.log('Cerrar sesión');
+    removeToken();
+    setAuth(null);
   }
 
   const setUser = (user) => {

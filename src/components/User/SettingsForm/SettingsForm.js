@@ -5,10 +5,11 @@ import { useHistory } from 'react-router-dom';
 import { useApolloClient } from '@apollo/client';
 import PasswordForm from '../PasswordForm/PasswordForm';
 import './SettingsForm.scss';
+import EmailForm from '../EmailForm/EmailForm';
 
 const SettingsForm = (props) => {
 
-    const { setShowModal, setTitleModal, setChildrenModal } = props;
+    const { setShowModal, setTitleModal, setChildrenModal, getUser } = props;
     const { logout } = useAuth();
     const history = useHistory();
     const client = useApolloClient();
@@ -21,15 +22,18 @@ const SettingsForm = (props) => {
 
     const onChangePassword = () => {
         setTitleModal('Cambiar contraseña');
-        setChildrenModal(
-            <PasswordForm />
-        );
+        setChildrenModal(<PasswordForm logout={onLogout} />);
+    }
+
+    const onChangeEmail = () => {
+        setTitleModal('Cambiar email');
+        setChildrenModal(<EmailForm setShowModal={setShowModal} currentEmail={getUser.email} />);
     }
 
     return (
         <div className="settings-form">
             <Button onClick={onChangePassword} >Cambiar contraseña</Button>
-            <Button>Cambiar email</Button>
+            <Button onClick={onChangeEmail} >Cambiar email</Button>
             <Button>Descripción</Button>
             <Button>Sitio web</Button>
             <Button onClick={onLogout} >Cerrar sesión</Button>

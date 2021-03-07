@@ -44,6 +44,7 @@ const Profile = ({ username }) => {
                         setShowModal={setShowModal}
                         setTitleModal={setTitleModal}
                         setChildrenModal={setChildrenModal}
+                        getUser={getUser}
                     />);
                 setShowModal(true);
                 break;

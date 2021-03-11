@@ -30,18 +30,24 @@ const Followers = (props) => {
         stopPolling: stopPollingFolloweds
     } = useQuery(GET_FOLLOWEDS, { variables: { username } });
 
+    // ojo, que quizás es mejor usar refetch para el caso de los Followeds
     // lo usamos para realizar llamadas al servicio cada cierto tiempo (quizás lo mejor sería usar subscription de graphql)
     // esto puede afectar el rendimiento del servidor ya que se hacen muchas llamadas (una cada segundo)
     // pero lo bueno es que react no renderiza el componente en cada llamada, 
     // solo lo hace cuando el dato que viene desde el servicio es distinto al que tenemos actualmente.
     useEffect(() => {
         startPollingFollowers(1000);
-        startPollingFolloweds(1000);
         return () => {
             stopPollingFollowers();
+        }
+    }, [startPollingFollowers, stopPollingFollowers]);
+
+    useEffect(() => {
+        startPollingFolloweds(1000);
+        return () => {
             stopPollingFolloweds();
         }
-    }, [startPollingFollowers, stopPollingFollowers, startPollingFolloweds, stopPollingFolloweds]);
+    }, [startPollingFolloweds, stopPollingFolloweds]);
 
     const openFollowers = () => {
         setTitleModal('Seguidores');
@@ -49,11 +55,14 @@ const Followers = (props) => {
         setShowModal(true);
     }
 
-    if (loadingFollowers) return null;
-    if (errorFollowers) return null;
+    const openFolloweds = () => {
+        setTitleModal('Seguidos');
+        setChildrenModal(<ListUsers users={getFolloweds} setShowModal={setShowModal} />)
+        setShowModal(true);
+    }
 
-    if (loadingFolloweds) return null;
-    if (errorFolloweds) return null;
+    if (loadingFollowers || loadingFolloweds) return null;
+    if (errorFollowers || errorFolloweds) return null;
 
     const { getFollowers } = dataFollowers;
     const { getFolloweds } = dataFolloweds;
@@ -76,6 +85,7 @@ const Followers = (props) => {
 
                 <p
                     className="link"
+                    onClick={openFolloweds}
                 >
                     <span>{size(getFolloweds)}</span> {size(getFolloweds) === 1 ? 'seguido' : 'seguidos'}
                 </p>

@@ -10,6 +10,7 @@ import AvatarForm from '../AvatarForm';
 import './Profile.scss';
 import HeaderProfile from './HeaderProfile/HeaderProfile';
 import SettingsForm from '../SettingsForm/SettingsForm';
+import Followers from './Followers/Followers';
 
 const Profile = ({ username }) => {
 
@@ -20,6 +21,7 @@ const Profile = ({ username }) => {
     const { auth } = useAuth();
     console.log(auth);
 
+    // trae toda la info del usuario que estamos viendo por su username en la url
     const { data, loading, error, refetch } = useQuery(GET_USER, {
         variables: { username }
     });
@@ -67,13 +69,13 @@ const Profile = ({ username }) => {
                 </Grid.Column>
                 <Grid.Column width={11} className="profile__right" >
                     <HeaderProfile getUser={getUser} handleModal={handleModal} />
-                    <div>Followers</div>
+                    <Followers username={username} />
                     <div className="other">
                         <p className="name" >{getUser.name}</p>
                         {
                             getUser.siteWeb
                             &&
-                            <a href={getUser.siteWeb} className="siteWeb" target="_blank" >
+                            <a href={getUser.siteWeb} className="siteWeb" target="_blank" rel="noreferrer" >
                                 {getUser.siteWeb}
                             </a>
                         }

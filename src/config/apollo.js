@@ -1,4 +1,4 @@
-import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
+import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { createUploadLink } from 'apollo-upload-client'; // para poder envíar archivos a graphql
 import { setContext } from 'apollo-link-context'; // para poder enviar el context a graphql
 import { getToken } from '../utils/token';

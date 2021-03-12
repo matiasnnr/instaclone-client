@@ -8,7 +8,7 @@ import './Followers.scss';
 
 const Followers = (props) => {
 
-    const { username } = props;
+    const { username, totalPublications } = props;
     const [showModal, setShowModal] = useState(false);
     const [titleModal, setTitleModal] = useState('');
     const [childrenModal, setChildrenModal] = useState(null);
@@ -73,7 +73,7 @@ const Followers = (props) => {
                 <p
                     className="link"
                 >
-                    <span>**</span> publicaciones
+                    <span>{totalPublications}</span> {totalPublications === 1 ? 'publicación' : 'publicaciones'}
                 </p>
 
                 <p

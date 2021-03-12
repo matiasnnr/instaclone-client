@@ -12,7 +12,7 @@ import HeaderProfile from './HeaderProfile/HeaderProfile';
 import SettingsForm from '../SettingsForm/SettingsForm';
 import Followers from './Followers/Followers';
 
-const Profile = ({ username }) => {
+const Profile = ({ username, totalPublications }) => {
 
     const [showModal, setShowModal] = useState(false);
     const [titleModal, setTitleModal] = useState('');
@@ -69,7 +69,7 @@ const Profile = ({ username }) => {
                 </Grid.Column>
                 <Grid.Column width={11} className="profile__right" >
                     <HeaderProfile getUser={getUser} handleModal={handleModal} />
-                    <Followers username={username} />
+                    <Followers username={username} totalPublications={totalPublications} />
                     <div className="other">
                         <p className="name" >{getUser.name}</p>
                         {

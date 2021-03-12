@@ -1,13 +1,18 @@
 import React, { useCallback, useState } from 'react';
 import { Modal, Icon, Button, Dimmer, Loader } from 'semantic-ui-react';
 import { useDropzone } from 'react-dropzone';
+import { useMutation } from '@apollo/client';
+import { PUBLISH } from '../../../gql/Publication';
+import { toast } from 'react-toastify';
 import './ModalUpload.scss';
 
 const ModalUpload = (props) => {
 
     const { show, setShow } = props;
+    const [isLoading, setIsLoading] = useState(false);
     const [fileUpload, setFileUpload] = useState(null);
-    console.log(fileUpload);
+
+    const [publish] = useMutation(PUBLISH);
 
     // acá llegará el fichero que el usuario está subiendo en useDropzone
     const onDrop = useCallback((acceptedFile) => {
@@ -29,7 +34,33 @@ const ModalUpload = (props) => {
     })
 
     const onClose = () => {
+        setIsLoading(false);
+        setFileUpload(null);
         setShow(false);
+    }
+
+    const onPublish = async () => {
+        try {
+            setIsLoading(true);
+            const result = await publish({
+                variables: {
+                    file: fileUpload.file
+                }
+            });
+
+            const { data } = result;
+
+            if (!data.publish.status) {
+                toast.warning('No se pudo subir la imagen correctamente');
+                setIsLoading(false);
+            } else {
+                onClose();
+            }
+
+        } catch (error) {
+            console.log(error);
+            toast.error('No se pudo subir la imagen correctamente');
+        }
     }
 
     return (
@@ -53,12 +84,39 @@ const ModalUpload = (props) => {
                     </>
                 }
             </div>
-            {fileUpload?.type === "image" && (
+
+            {
+                fileUpload?.type === "image"
+                &&
                 <div
                     className="image"
                     style={{ backgroundImage: `url("${fileUpload.preview}")` }}
                 />
-            )}
+            }
+
+            {
+                fileUpload
+                &&
+                <Button
+                    className="btn-upload btn-action"
+                    onClick={onPublish}
+                >
+                    Publicar
+                    </Button>
+            }
+
+            {
+                isLoading
+                &&
+                // dimmer deja un fondo negro con opacidad para que se vea bien lo que se encuentra en su interior
+                <Dimmer
+                    className="publishing"
+                    active
+                >
+                    <Loader />
+                    <p>Publicando...</p>
+                </Dimmer>
+            }
         </Modal>
     )
 }

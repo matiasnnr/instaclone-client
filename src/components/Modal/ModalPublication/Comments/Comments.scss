@@ -1,0 +1,32 @@
+@import '../../../../scss/index.scss';
+
+.comments {
+    height: calc(100% - 95px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    .comment {
+        display: flex;
+        align-items: flex-start;
+        padding: 10px;
+        border-bottom: 1px solid $border-grey;
+        color: $font-dark;
+
+        img {
+            margin-right: 15px !important;
+        }
+
+        p {
+            margin: 0;
+
+            &:first-of-type {
+                font-weight: bold;
+            }
+
+            &:last-of-type {
+                max-width: 230px;
+                word-wrap: break-word;
+            }
+        }
+    }
+}

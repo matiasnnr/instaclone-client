@@ -21,7 +21,7 @@ const Feed = () => {
         return () => {
             stopPolling();
         }
-    }, [startPolling, stopPolling])
+    }, [startPolling, stopPolling]);
 
     if (loading) return null;
 

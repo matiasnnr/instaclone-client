@@ -5,7 +5,8 @@ import { getToken } from '../utils/token';
 
 // const httpLink = createHttpLink({ para comenzar a usar grapghql
 const httpLink = createUploadLink({ // para poder enviar archivos mediante graphql
-    uri: 'http://localhost:4000/',
+    // uri: 'http://localhost:4000/', // desarrollo
+    uri: 'https://matiasnnr-instaclone-server.herokuapp.com/', // producción
 });
 
 const authLink = setContext((_, { headers }) => { // para enviar el token en las peticiones en caso de estar logueado
